@@ -81,6 +81,9 @@
                             </div>
                         </div>
                     `;
+
+                        const el = document.getElementById('messages');
+                        el.scrollTop = el.scrollHeight;
                     });
             } else {
                 console.warn('Echo not ready');
