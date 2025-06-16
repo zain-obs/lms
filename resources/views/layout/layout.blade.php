@@ -61,25 +61,27 @@
     </script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
+        const boundClassrooms = new Set();
+
         window.addEventListener('classroom-id-available', function(event) {
             const classroomId = event.detail.classroomId;
-
             console.log('Got classroomId:', classroomId);
+            if (boundClassrooms.has(classroomId)) return;
+            boundClassrooms.add(classroomId);
 
             window.Echo.channel(`classroom.${classroomId}`)
                 .listen('.sent', (data) => {
                     console.log('Received message:', data);
 
                     document.getElementById('messages').innerHTML += `
-            <div class="flex flex-col bg-white shadow-md rounded py-1 px-3">
-                <p class="text-start text-sm">${data.message}</p>
-                <div class="text-xs text-gray-400 flex justify-between">
-                    <span>${data.sender}</span>
-                    <span>${data.created_at}</span>
+                <div class="flex flex-col bg-white shadow-md rounded py-1 px-3">
+                    <p class="text-start text-sm">${data.message}</p>
+                    <div class="text-xs text-gray-400 flex justify-between">
+                        <span>${data.sender}</span>
+                        <span>${data.created_at}</span>
+                    </div>
                 </div>
-            </div>
-        `;
-
+            `;
                     const el = document.getElementById('messages');
                     el.scrollTop = el.scrollHeight;
                 });

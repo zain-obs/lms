@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use Illuminate\Support\Facades\Log;
-use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
@@ -18,18 +17,17 @@ class MessageSent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        //Log::info('classroom.' . $this->message);
-        return new Channel('classroom.' . $this->message->classroom_id);
+        return new Channel('classroom.' . $this->message['classroom_id']);
     }
     public function broadcastWith()
     {
         return [
-            'id' => $this->message->id,
-            'message' => $this->message->message,
-            'sender' => $this->message->sender,
-            'channel' => $this->message->channel,
-            'classroom_id' => $this->message->classroom_id,
-            'created_at' => $this->message->created_at->diffForHumans(),
+            'id' => $this->message['id'],
+            'message' => $this->message['message'],
+            'sender' => $this->message['sender'],
+            'channel' => $this->message['channel'],
+            'classroom_id' => $this->message['classroom_id'],
+            'created_at' => $this->message['created_at'],
         ];
     }
 

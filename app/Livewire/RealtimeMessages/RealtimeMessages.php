@@ -5,17 +5,15 @@ namespace App\Livewire\RealtimeMessages;
 use App\Models\Message;
 use Livewire\Component;
 use App\Events\MessageSent;
-use Illuminate\Support\Facades\Log;
 
 class RealtimeMessages extends Component
 {
     public $classroomId;
 
-    //Storing Message and broadcasting it
     public function sendMessage($message)
     {
-        if ($message = Message::create(['message' => $message, 'sender' => auth()->user()->name, 'channel' => 'discussions', 'classroom_id' => $this->classroomId])) {
-            broadcast(new MessageSent($message));
+        if ($newMessage = Message::create(['message' => $message, 'sender' => auth()->user()->name, 'channel' => 'discussions', 'classroom_id' => $this->classroomId])) {
+            broadcast(new MessageSent($newMessage->toArray()));
             $this->skipRender();
         }
     }
