@@ -66,28 +66,23 @@
 
             console.log('Got classroomId:', classroomId);
 
-            if (window.Echo) {
-                console.log(window.Echo);
-                window.Echo.channel(`classroom.${classroomId}`)
-                    .listen('message.sent', (data) => {
-                        console.log('New message:', data);
+            window.Echo.channel(`classroom.${classroomId}`)
+                .listen('.sent', (data) => {
+                    console.log('Received message:', data);
 
-                        document.getElementById('messages').innerHTML += `
-                        <div class="flex flex-col bg-white shadow-md rounded py-1 px-3">
-                            <p class="text-start text-sm">${data.message}</p>
-                            <div class="text-xs text-gray-400 flex justify-between">
-                                <span>${data.sender}</span>
-                                <span>${data.created_at}</span>
-                            </div>
-                        </div>
-                    `;
+                    document.getElementById('messages').innerHTML += `
+            <div class="flex flex-col bg-white shadow-md rounded py-1 px-3">
+                <p class="text-start text-sm">${data.message}</p>
+                <div class="text-xs text-gray-400 flex justify-between">
+                    <span>${data.sender}</span>
+                    <span>${data.created_at}</span>
+                </div>
+            </div>
+        `;
 
-                        const el = document.getElementById('messages');
-                        el.scrollTop = el.scrollHeight;
-                    });
-            } else {
-                console.warn('Echo not ready');
-            }
+                    const el = document.getElementById('messages');
+                    el.scrollTop = el.scrollHeight;
+                });
         });
     </script>
     @stack('scripts')

@@ -16,7 +16,6 @@ class RealtimeMessages extends Component
     {
         if ($message = Message::create(['message' => $message, 'sender' => auth()->user()->name, 'channel' => 'discussions', 'classroom_id' => $this->classroomId])) {
             broadcast(new MessageSent($message));
-            Log::info('Broadcasting to channel: classroom.' . $message->classroom_id);
             $this->skipRender();
         }
     }
